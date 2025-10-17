@@ -6,7 +6,7 @@ CCLaboratories Biodiversity Atlas
 */
 
 body {
-    background-color: white;
+    background-color: black;
     color: DimGray;
     font-family: 'Courier New', Courier, monospace;
     font-size: 1em;
@@ -16,6 +16,7 @@ body {
 /* title */
 #title-wrapper {
     text-align: center;
+    color: white;
 }
 
 .headline {
@@ -24,6 +25,7 @@ body {
     font-weight: 600;
     margin-top: 80px;
     margin-bottom: 60px;
+
 }
 
 /* main content */
