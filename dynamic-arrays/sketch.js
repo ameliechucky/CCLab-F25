@@ -34,8 +34,5 @@ function draw() {
 
   }
   console.log(c.length);
-  // if (mouseIsPressed) {
-  //   c.push(new Cloud(mouseX, mouseY, random(50, 100)));
-  // }
 }
 
