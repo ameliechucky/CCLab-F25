@@ -1,4 +1,426 @@
-//jahanger
+class Misheel {
+  constructor(startX, startY) {
+    this.x = startX;
+    this.y = startY;
+    this.angle = 0;
+    this.speed = 0.005;
+    this.radius = 70;
+    this.count = 8;
+    this.speedAngle = 0.02;
+  }
+  display() {
+    push();
+    translate(this.x - 200, this.y - 200);
+
+    // --- base triangle ---
+    beginShape();
+    fill(255, 255, 0, 100);
+    stroke(253, 216, 8);
+    strokeWeight(2);
+    vertex(180, 200);
+    vertex(220, 200);
+    vertex(240, 330);
+    vertex(160, 330);
+    endShape(CLOSE);
+
+    beginShape();
+    fill(255, 255, 0, 200);
+    noStroke();
+    vertex(190, 200);
+    vertex(210, 200);
+    vertex(220, 300);
+    vertex(180, 300);
+    endShape(CLOSE);
+
+    // --- body ---
+    fill(128, 128, 128);
+    stroke(0);
+    strokeWeight(1);
+    arc(200, 200, 140, 50, 0, TWO_PI);
+
+    push();
+    noFill();
+    stroke(0);
+    translate(200, 200);
+
+    for (let i = 0; i < this.count; i++) {
+      let a = this.angle + (TWO_PI / this.count) * i;
+      let cx = this.radius * 0.8 * cos(a);
+      let cy = this.radius * 0.28 * sin(a);
+      fill(255, 0, 0);
+      circle(cx, cy, 4);
+    }
+    for (let i = 0; i < this.count; i++) {
+      let a = this.angle + (TWO_PI / this.count) * i;
+      let cx = this.radius * 0.8 * cos(a);
+      let cy = this.radius * 0.33 * sin(a);
+      fill(0);
+      line(cx, cy, 0, 0);
+    }
+    pop();
+
+    // --- face ---
+    fill(0, 255, 255, 180);
+    arc(200, 200, 60, 80, PI, 0);
+    strokeWeight(5);
+    stroke(0, 0, 255);
+    arc(200, 200, 60, 10, 0, PI);
+    fill(0);
+    circle(200, 158, 1);
+
+    // --- head pop ---
+    push();
+    stroke(0);
+    strokeWeight(1);
+    noFill();
+    beginShape();
+    let steps = 40;
+    for (let i = 0; i <= 1; i += 1 / steps) {
+      let x = lerp(200, 200, i);
+      let y = lerp(158, 128, i);
+      let v = 3 * sin(frameCount * 0.2 - i * 15);
+      vertex(x + v, y);
+    }
+    endShape();
+    fill(255, 0, 0);
+    circle(200, 128, 8);
+    pop();
+
+    // --- eyes ---
+    stroke(0);
+    strokeWeight(1);
+    fill(255);
+    arc(200 - 7, 200 - 20, 12, 15, 0, TWO_PI);
+    arc(200 + 7, 200 - 20, 12, 15, 0, TWO_PI);
+    fill(0);
+    circle(200 + 7, 200 - 20, 2);
+    circle(200 - 7, 200 - 20, 2);
+
+    // --- small mouth dot ---
+    arc(200, 190, 5, 5, 0, PI);
+
+    pop();
+  }
+  update() {
+    this.x = noise(frameCount * this.speed) * width;
+    this.y = noise(frameCount * this.speed + 1000) * height; // offset for independent Y
+    this.angle += this.speedAngle;
+
+  }
+}
+
+//Helena
+class Stanley {
+  constructor(startX, startY) {
+    this.baseX = startX;
+    this.baseY = startY;
+    this.baseScale = 1.00;
+
+    this.colWhite = "#fffbf0";
+    this.colBrown = "#c6b6ac"
+    this.colRed = "#fb3310"
+
+    this.armsY = [0, 0, 22, 22]
+    this.armsScaleX = [1, -1, 1, -1]
+    //left upper arm, right upper arm, left bottom arm, right bottom arm
+
+
+    this.legSwingSpeed = 1
+    this.armSwingSpeed = 1
+    this.blinkTimer = 0;
+    this.t = 0
+    this.heartSize = 10
+    this.moveSpeed = 0
+
+  }
+
+
+  upperPaws() {
+    fill("#c6b6ac");
+    for (let angle = PI / 6; angle < PI; angle += PI / 3) {
+      const x = 9 * cos(angle);
+      const y = 9 * sin(angle);
+      circle(x, y, 7);
+    }
+    circle(0, 0, 10)
+  }
+
+  bottomPaws() {
+    fill("#c6b6ac");
+    for (let angle = PI / 6; angle < PI; angle += PI / 3) {
+      const x = 9 * cos(angle);
+      const y = 9 * sin(angle);
+      circle(x, y, 8);
+    }
+    circle(0, 0, 10)
+
+  }
+
+  upperArms(a = 0) {
+    //left upper arm
+    stroke(this.colWhite);
+    strokeWeight(8);
+    fill(this.colWhite)
+    push()
+    rotate(-PI / 8 + a);
+    ellipse(-23, 5, 20, 3);
+    rotate(PI / 4 + a * 0.2);
+    ellipse(-33, 28, 25, 5);
+
+    //let upper paw
+    noStroke()
+    fill(this.colBrown)
+    push();
+    translate(-45, 28);
+    rotate(PI / 1.5);
+    this.upperPaws();
+    pop();
+
+    pop()
+  }
+
+  bottomArms(a = 0) {
+    //left bottom arm
+    stroke(this.colWhite);
+    strokeWeight(8);
+    fill(this.colWhite)
+    push()
+    rotate(-PI / 8 + a);
+    ellipse(-30, 3, 30, 4);
+    rotate(PI / 4 + a * 0.2);
+    ellipse(-45, 33, 35, 5);
+
+    //left bottom paw
+    noStroke()
+    fill(this.colBrown)
+    push();
+    translate(-60, 33);
+    rotate(PI / 1.5);
+    this.bottomPaws();
+    pop();
+
+    pop()
+  }
+
+
+
+
+  display() {
+    // the push and pop, along with the translate 
+    // places your whole dancer object at this.x and this.y.
+    // you may change its position on line 19 to see the effect.
+    push();
+    translate(this.x, this.y);
+    scale(this.s)
+
+    // ******** //
+    // ⬇️ draw your dancer from here ⬇️
+
+    //Main body
+    noStroke();
+    fill(this.colWhite);
+    rect(-5, -10, 10, 20)
+    ellipse(0, 24, 25, 55);//body
+
+    //Head
+
+    push()
+    translate(0, -15);
+    rotate(this.headSwing);
+    translate(0, 15);
+    if (mouseIsPressed) {
+      colorMode(HSB, 100)
+      const h = map(sin(this.t * 0.5), -1, 1, 0, 100)
+      fill(h, 80, 100)
+    } else {
+      fill(this.colRed)
+    }
+
+    beginShape();
+    curveVertex(0, -15);
+    curveVertex(12, -8);
+    curveVertex(48, -15);
+    curveVertex(35, -70);
+    curveVertex(0, -90);
+    curveVertex(-35, -70);
+    curveVertex(-48, -15);
+    curveVertex(-12, -8);
+    curveVertex(0, -15);
+    endShape();
+
+    //eyes
+    noStroke()
+    fill(255)
+    if (!this.blink) {
+      ellipse(-10, -30, 6, 12);
+      ellipse(10, -30, 8, 15);
+    } else {
+      noFill()
+      stroke(255)
+      strokeWeight(3)
+      arc(-10, -30, 6, 12, -PI, 0,);
+      arc(10, -30, 8, 15, -PI, 0);
+    }
+
+    //Patten on head
+    fill(255)
+    noStroke()
+    push()
+    translate(10, -65)
+    rotate(PI / 6)
+    ellipse(0, 0, 15, 12);
+    pop()
+
+    push()
+    translate(-18, -70)
+    rotate(-PI / 4.5)
+    ellipse(0, 0, 45, 25);
+    pop()
+
+    push()
+    translate(25, -73)
+    rotate(PI / 4)
+    ellipse(0, 0, 30, 10);
+    pop()
+
+
+    pop()
+
+    //upper arms
+    for (let i = 0; i < 2; i++) {
+      const sx = this.armsScaleX[i]
+      const a = this.upperArmsSwing;
+      push();
+      scale(sx, 1)
+      this.upperArms(a);
+      pop();
+    }
+
+    //bottom arms
+    for (let i = 2; i < 4; i++) {
+      const y = this.armsY[i]
+      const sx = this.armsScaleX[i]
+      const a = this.bottomArmsSwing;
+      push();
+      translate(0, y);
+      scale(sx, 1)
+      this.bottomArms(a);
+      pop();
+    }
+
+
+    //left leg
+    noStroke();
+    fill(this.colWhite);
+    push();
+    translate(-8, 55);
+    rotate(-1 * this.leftLegSwing);
+    this.leftLength = map(sin(this.t * 5), -1, 1, 62, 52)
+    ellipse(0, 10, 16, this.leftLength);
+    pop();
+
+    //right leg
+    noStroke();
+    fill(this.colWhite);
+    push();
+    translate(8, 55);
+    rotate(this.rightLegSwing);
+    this.rightLength = map(sin(this.t * 5), -1, 1, 52, 62)
+    ellipse(0, 10, 16, this.rightLength);
+    pop();
+
+
+    //Heart
+    if (mouseIsPressed) {
+      colorMode(HSB, 100)
+      const h = map(sin(this.t * 0.5), -1, 1, 0, 100)
+      fill(h, 80, 100)
+    } else {
+      fill(this.colRed)
+    }
+    arc(-3, 12, 4 + this.heartSize, 4 + this.heartSize, 3 * PI / 4, 7 * PI / 4)
+    arc(3, 12, 4 + this.heartSize, 4 + this.heartSize, 5 * PI / 4, PI / 4)
+    push()
+    translate(0, 15)
+    rotate(PI / 4)
+    rectMode(CENTER)
+    rect(0, 0, 4 + this.heartSize, 4 + this.heartSize)
+    pop()
+
+    // ⬆️ draw your dancer above ⬆️
+    // ******** //
+
+    // the next function draws a SQUARE and CROSS
+    // to indicate the approximate size and the center point
+    // of your dancer.
+    // it is using "this" because this function, too, 
+    // is a part if your Dancer object.
+    // comment it out or delete it eventually.
+
+    //this.drawReferenceShapes()
+
+    pop();
+  }
+
+  // drawReferenceShapes() {
+  //   noFill();
+  //   strokeWeight(1)
+  //   stroke(255, 0, 0);
+  //   line(-5, 0, 5, 0);
+  //   line(0, -5, 0, 5);
+  //   stroke(255);
+  //   rect(-100, -100, 200, 200);
+  //   fill(255);
+  //   stroke(0);
+  // }
+
+
+  update() {
+    this.t += 0.03
+
+    //leg
+    if (keyIsPressed) {
+      this.legSwingSpeed = 5
+    } else {
+      this.legSwingSpeed = 1
+    }
+    this.leftLegSwing = 0.2 * sin(this.legSwingSpeed * this.t + 5
+    );
+    this.rightLegSwing = 0.2 * sin(this.legSwingSpeed * this.t
+    )
+    //arm
+    if (keyIsPressed) {
+      this.armSwingSpeed = 5
+    } else {
+      this.armSwingSpeed = 1
+    }
+    this.upperArmsSwing = 0.4 * sin(this.armSwingSpeed * this.t);
+    this.bottomArmsSwing = 0.2 * sin(this.armSwingSpeed * this.t);
+    this.headSwing = 0.18 * sin(this.t * 1.2);
+
+    //blink
+    this.blinkTimer = (this.blinkTimer + 1) % 110;//the frequency of blinking
+    this.blink = (this.blinkTimer < 30);
+    //the real blinking time
+
+    this.heartSize = map(sin(this.t), -1, 1, 5, 9)
+
+
+    //overall
+    if (keyIsPressed) {
+      this.moveSpeed = 5
+    } else {
+      this.moveSpeed = 1
+    }
+    this.x = this.baseX + 30 * sin(this.moveSpeed * this.t * 0.6);
+    this.y = this.baseY + 15 * sin(this.moveSpeed * this.t * 1.2 + PI / 2);
+    this.s = this.baseScale + -0.3 * sin(this.t * 1.1);
+
+  }
+  // update properties here to achieve
+  // your dancer's desired moves and behaviour
+}
+//jahangir
 class EyeDancer {
   constructor(startX, startY) {
     this.rect_x = startX
@@ -13,69 +435,69 @@ class EyeDancer {
     this.rect_stage = 0
     this.eye_x = 0
     this.eye_y = 0
-    
+
   }
   update() {
     //stage 0 rect is preparing to jump x scale is increasing 
-    if(this.rect_stage == 0 && this.rect_x_scale < 1.2){
+    if (this.rect_stage == 0 && this.rect_x_scale < 1.2) {
       this.rect_x_scale += 0.03
       this.rect_y_scale = 2 - this.rect_x_scale
     }
-    if(this.rect_stage == 0 && this.rect_x_scale >= 1.2){
+    if (this.rect_stage == 0 && this.rect_x_scale >= 1.2) {
       this.rect_stage = 1
     }
-    if(this.rect_stage == 1 ){
+    if (this.rect_stage == 1) {
       this.rect_stage = 2
       this.rect_y_scale = 0.1 + this.rect_x_scale
       this.rect_x_scale = 2 - this.rect_y_scale
-      this.rect_y_s = -1/2 * (this.rect_h * this.rect_y_scale - this.rect_h)
+      this.rect_y_s = -1 / 2 * (this.rect_h * this.rect_y_scale - this.rect_h)
 
-    }else if(this.rect_stage == 2){
+    } else if (this.rect_stage == 2) {
       //stage 1 rect is jumping x is converted to y and calculating speed
       this.rect_y_s += 1
-      if(this.rect_y + this.rect_h * this.rect_y_scale * 1/2 +this.rect_y_s  <=  this.rect_start_y + this.rect_h * this.rect_y_scale * 1/2 ){
+      if (this.rect_y + this.rect_h * this.rect_y_scale * 1 / 2 + this.rect_y_s <= this.rect_start_y + this.rect_h * this.rect_y_scale * 1 / 2) {
         this.rect_y += this.rect_y_s
-      }else{
-        this.rect_y =  this.rect_start_y 
+      } else {
+        this.rect_y = this.rect_start_y
         this.rect_stage = 3
       }
-      if(this.rect_y_s < 0){
+      if (this.rect_y_s < 0) {
         this.eye_y = 5
-      }else{
+      } else {
         this.eye_y = -5
       }
     }
-    if(this.rect_stage == 3){
-      if(this.rect_y_scale > 1){
+    if (this.rect_stage == 3) {
+      if (this.rect_y_scale > 1) {
         this.rect_y_scale += -0.001
-        this.rect_y_scale += - 0.6 * pow((1-this.rect_y_scale),2)
-      }if(this.rect_y_scale < 1){
+        this.rect_y_scale += - 0.6 * pow((1 - this.rect_y_scale), 2)
+      } if (this.rect_y_scale < 1) {
         this.rect_y_scale += 0.001
-        this.rect_y_scale += 0.5 * pow((1-rect_y_scale),2)
+        this.rect_y_scale += 0.5 * pow((1 - rect_y_scale), 2)
       }
-      this.rect_x_scale = 2 - this.rect_y_scale 
+      this.rect_x_scale = 2 - this.rect_y_scale
 
-      if(this.rect_y_scale <= 1.01 && this.rect_y_scale >= 0.99){
+      if (this.rect_y_scale <= 1.01 && this.rect_y_scale >= 0.99) {
         this.rect_stage = 0
       }
       this.eye_y = 0
     }
-    }
-  m_rect(x,y, w, h, s_w, s_h){
+  }
+  m_rect(x, y, w, h, s_w, s_h) {
     rectMode(CENTER)
     noStroke()
-    y += -1/2 * (h * s_h - h)
+    y += -1 / 2 * (h * s_h - h)
     rect(x, y, w * s_w, h * s_h)
   }
   display() {
     fill(255)
     this.m_rect(this.rect_x, this.rect_y, this.rect_w, this.rect_h, this.rect_x_scale, this.rect_y_scale)
     fill(0)
-  
+
 
     this.eye_x = noise(frameCount * 0.05) * 1 + sin(frameCount * 0.05) * 1
-  
-    this.m_rect(this.rect_x + this.eye_x , this.rect_y , 20, 20,this.rect_x_scale, this.rect_y_scale )
+
+    this.m_rect(this.rect_x + this.eye_x, this.rect_y, 20, 20, this.rect_x_scale, this.rect_y_scale)
   }
 }
 //siyu
@@ -113,7 +535,7 @@ class OldMan {
     noStroke()
     fill(240, 216, 202)
     circle(0, 0 - this.s * 0.4, this.s * 0.9)
-   rectMode(CENTER);
+    rectMode(CENTER);
     rect(0, 0 + this.s * 0.1, this.s * 0.1, this.s * 0.2)
     //hands
     push();
@@ -164,8 +586,8 @@ class OldMan {
     strokeWeight(3)
     fill(255, 232, 0)
     rectMode(CENTER);
-    rect(this.x-this.s * 0.23*1.4 + this.s * 0.16, this.y + this.s * 0.7, this.s * 0.23, this.s * 0.1)
-    rect(this.x+this.s * 0.23*1.4 - this.s * 0.16, this.y + this.s * 0.7, this.s * 0.23, this.s * 0.1)
+    rect(this.x - this.s * 0.23 * 1.4 + this.s * 0.16, this.y + this.s * 0.7, this.s * 0.23, this.s * 0.1)
+    rect(this.x + this.s * 0.23 * 1.4 - this.s * 0.16, this.y + this.s * 0.7, this.s * 0.23, this.s * 0.1)
 
     pop();
 
@@ -280,7 +702,7 @@ class AAA {
     this.jump = 0;
     this.spin = 0;
     this.cShift = 0;
-    this.eyeBlink = 1;  
+    this.eyeBlink = 1;
     this.mouthOpen = 10;
   }
 
@@ -292,10 +714,10 @@ class AAA {
     this.jump = sin(frameCount * 0.08) * 20;
     this.spin = sin(frameCount * 0.02) * 15;
     this.cShift = (sin(frameCount * 0.05) + 1) / 2 * 100;
-     this.eyeBlink = (sin(frameCount * 0.3) + 1) / 2; 
-    this.eyeBlink = max(0.2, this.eyeBlink); 
+    this.eyeBlink = (sin(frameCount * 0.3) + 1) / 2;
+    this.eyeBlink = max(0.2, this.eyeBlink);
 
-    
+
     this.mouthOpen = 10 + sin(frameCount * 0.2) * 5;
   }
 
@@ -312,12 +734,12 @@ class AAA {
 
     fill(this.headR, this.headG, this.headB);
     ellipse(0, -20, 40, 40);
-push();
+    push();
     fill(0);
     ellipse(-10, -25, 6, 6 * this.eyeBlink);
     ellipse(10, -25, 6, 6 * this.eyeBlink);
 
-    
+
     fill(0);
     ellipse(0, -10, 10, this.mouthOpen);
     pop();
@@ -339,7 +761,7 @@ push();
 
     // ⬆️ draw your dancer above ⬆️
 
-   // this.drawReferenceShapes();
+    // this.drawReferenceShapes();
     pop();
   }
 
@@ -508,7 +930,7 @@ class Chau {
     // it is using "this" because this function, too,
     // is a part if your Dancer object.
     // comment it out or delete it eventually.
-   // this.drawReferenceShapes();
+    // this.drawReferenceShapes();
 
     pop();
   }

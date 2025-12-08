@@ -10,7 +10,7 @@ console.log("[l]: switches on strobe light")
 //  sketch.)
 
 // Add the name of all dancer classes in here:
-let dancerClasses = [PumpkinMan, BunBun, Jellyfish, VioletTorch, dancingjohn, Chau, AAA, kirby, OldMan, EyeDancer];
+let dancerClasses = [Misheel, Stanley, PumpkinMan, BunBun, Jellyfish, VioletTorch, dancingjohn, Chau, AAA, kirby, OldMan, EyeDancer];
 
 
 let dancers = [];
