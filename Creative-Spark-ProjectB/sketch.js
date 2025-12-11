@@ -37,9 +37,9 @@ function setup() {
 
   //use camera and hide image
   mic = new p5.AudioIn();
-  fft = new p5.FFT();
-  // mic.start();
-  // fft.setInput(mic);
+  fft = new p5.FFT(0.8, 16);
+  mic.start();
+  fft.setInput(mic);
 
   //use videoera and hide image
   video = createCapture(VIDEO)
@@ -141,8 +141,6 @@ function drawShape(shape, a) {
 }
 function mousePressed() {
   a = shape.length;
-  mic.start();
-  fft.setInput(mic);
 }
 function mouseReleased() {
   dragRect = false;
@@ -157,7 +155,7 @@ function draw() {
     n = 0;
   }
   pitch = spectrum[n];
-  console.log(spectrum[n]);
+  console.log(spectrum);
   let rectpitch = map(spectrum[n], 0, 255, 0, 200);
 
   push()
