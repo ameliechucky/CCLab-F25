@@ -6,16 +6,21 @@ let bands, bandsw;
 function setup() {
   let cnv = createCanvas(500, 500);
   mic = new p5.AudioIn();
-  mic.start();
+
 
   bands = 16;
   fft = new p5.FFT(0.8, bands);
 
   // set the input source to the mic
-  fft.setInput(mic);
+
 
   // largura dos rects de bandas
   bandsw = width / bands;
+}
+
+function mousePressed() {
+  mic.start();
+  fft.setInput(mic);
 }
 
 function draw() {
