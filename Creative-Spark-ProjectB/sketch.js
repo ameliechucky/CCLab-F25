@@ -32,7 +32,8 @@ function preload() {
 function setup() {
   // keep these 3 lines as they are
   let canvas = createCanvas(windowWidth, windowHeight);
-  canvas.mousePressed(userStartAudio);
+  //canvas.mousePressed(userStartAudio);
+  getAudioContext().suspend();
   canvas.id("p5-canvas");
   canvas.parent("p5-canvas-container");
 
@@ -142,6 +143,7 @@ function drawShape(shape, a) {
 }
 function mousePressed() {
   a = shape.length;
+  userStartAudio();
 }
 function mouseReleased() {
   dragRect = false;
