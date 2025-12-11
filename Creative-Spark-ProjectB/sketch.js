@@ -38,7 +38,7 @@ function setup() {
   //use camera and hide image
   mic = new p5.AudioIn();
   mic.start();
-  fft = new p5.FFT()
+  fft = new p5.FFT(0.8, 16);
   fft.setInput(mic)
 
   //use videoera and hide image
