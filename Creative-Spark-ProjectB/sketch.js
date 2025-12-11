@@ -6,6 +6,7 @@ let bands, bandsw;
 function setup() {
   let cnv = createCanvas(500, 500);
   cnv.mousePressed(userStartAudio);
+
   mic = new p5.AudioIn();
   mic.start();
 
@@ -19,7 +20,6 @@ function setup() {
   bandsw = width / bands;
 }
 
-
 function draw() {
   background(220);
   // display the FFT analysis
@@ -29,7 +29,6 @@ function draw() {
 function showFFT() {
   // esta análise de FFT usa as bandas do objeto
   let spectrum = fft.analyze();
-  //console.log(spectrum);
 
   // outra abordagem possível
   //let waveform = fft.waveform(32);
