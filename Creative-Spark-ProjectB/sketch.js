@@ -29,7 +29,7 @@ function draw() {
 function showFFT() {
   // esta análise de FFT usa as bandas do objeto
   let spectrum = fft.analyze();
-  console.log(spectrum);
+  //console.log(spectrum);
 
   // outra abordagem possível
   //let waveform = fft.waveform(32);
