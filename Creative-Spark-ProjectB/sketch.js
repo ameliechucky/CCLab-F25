@@ -21,6 +21,7 @@ function setup() {
 function mousePressed() {
   mic.start();
   fft.setInput(mic);
+  console.log("mic starts");
 }
 
 function draw() {
