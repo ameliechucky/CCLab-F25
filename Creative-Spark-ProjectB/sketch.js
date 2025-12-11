@@ -37,8 +37,8 @@ function setup() {
 
   //use camera and hide image
   mic = new p5.AudioIn();
-  mic.start();
-  // fft = new p5.FFT();
+  fft = new p5.FFT();
+  // mic.start();
   // fft.setInput(mic);
 
   //use videoera and hide image
@@ -141,7 +141,7 @@ function drawShape(shape, a) {
 }
 function mousePressed() {
   a = shape.length;
-  fft = new p5.FFT();
+  mic.start();
   fft.setInput(mic);
 }
 function mouseReleased() {
